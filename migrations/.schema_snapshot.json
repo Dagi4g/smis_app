@@ -1,0 +1,70 @@
+[
+    {
+        "name": "Attendance",
+        "fields": [
+            "id",
+            "student",
+            "teacher",
+            "date",
+            "status"
+        ]
+    },
+    {
+        "name": "GradeSection",
+        "fields": [
+            "id",
+            "grade",
+            "section"
+        ]
+    },
+    {
+        "name": "Person",
+        "fields": [
+            "id",
+            "first_name",
+            "father_name",
+            "grandfather_name",
+            "sex"
+        ]
+    },
+    {
+        "name": "Student",
+        "fields": [
+            "id",
+            "first_name",
+            "father_name",
+            "grandfather_name",
+            "sex",
+            "age",
+            "section"
+        ]
+    },
+    {
+        "name": "Subject",
+        "fields": [
+            "id",
+            "name"
+        ]
+    },
+    {
+        "name": "Teacher",
+        "fields": [
+            "id",
+            "first_name",
+            "father_name",
+            "grandfather_name",
+            "sex",
+            "username",
+            "password_hash"
+        ]
+    },
+    {
+        "name": "TeachingAssignment",
+        "fields": [
+            "id",
+            "teacher",
+            "subject",
+            "grade_section"
+        ]
+    }
+]
