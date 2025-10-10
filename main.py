@@ -82,6 +82,7 @@ class EthiopianCalendarScreen(Screen):
         today = datetime.now() - timedelta(hours=72)
         eth_date = EthiopianDateConverter.to_ethiopian(today.year, today.month, today.day)
         year, month, day = eth_date.year, eth_date.month, eth_date.day
+        
 
         self.layout.add_widget(Label(text=f"Ethiopian Calendar - {year}/{self.get_month_name(month)}", font_size=24, color=(0.1, 0.3, 0.6, 1),font_name="AmharicFont"))
 
