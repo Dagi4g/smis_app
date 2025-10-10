@@ -75,6 +75,13 @@ class Person(BaseModel):
     def full_name(self):
         names = [self.first_name, self.father_name, self.grandfather_name]
         return " ".join(n.title() for n in names if n)
+    
+    def __str__(self):
+        return self.full_name
+
+    def __repr__(self):
+        return f"<Person: {self.full_name}>"
+
 
 
 # ======== STUDENT ========
@@ -92,26 +99,48 @@ class Student(Person):
 # ======== TEACHER ========
 class Teacher(Person):
     username = peewee.CharField(unique=True)
-    password_hash = peewee.CharField()  # store hashed password
+    password_hash = peewee.CharField()
 
-    # Set password (hash it)
     def set_password(self, password):
+        """Set hashed password on this instance."""
         self.password_hash = pbkdf2_sha256.hash(password)
 
-    # Verify password
     def verify_password(self, password):
         return pbkdf2_sha256.verify(password, self.password_hash)
+
+    @classmethod
+    def generate_code(cls):
+        last = cls.select().order_by(cls.id.desc()).first()
+        next_id = (last.id + 1) if last else 1
+        return f"TH{next_id:05d}"
+
+    @classmethod
+    def create_teacher(cls, first_name, father_name, password, grandfather_name=None, sex=None):
+        username = cls.generate_code()
+        teacher = cls(
+            first_name=first_name.title(),
+            father_name=father_name.title(),
+            grandfather_name=grandfather_name.title() if grandfather_name else None,
+            sex=sex,
+            username=username
+        )
+        teacher.set_password(password)  # ✅ instance method sets hash
+        teacher.save()
+        print(f"Dear {teacher.full_name}, your username is {username}.")
+        return teacher
     
     @classmethod
     def authenticate(cls, username, password):
         try:
             teacher = cls.get(cls.username == username)
-            if teacher.verify_password(password):
-                return teacher
         except cls.DoesNotExist:
-            pass
+            return None
+        if teacher.verify_password(password):
+            return teacher
         return None
-    
+
+
+
     
 
 # ======== SUBJECT ========
