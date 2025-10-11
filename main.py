@@ -12,8 +12,9 @@ from datetime import datetime,timedelta
 import models  # your database models
 import models  # your database models
 
-# Ethiopian date conversion
-from ethiopian_date import EthiopianDateConverter
+# Ethiopian calendar conversion
+
+from ethiopia_calander import EthiopianCalendarScreen
 
 Window.clearcolor = (0.95, 0.95, 0.95, 1)
 
@@ -66,52 +67,6 @@ class DashboardScreen(Screen):
     def open_calendar(self, instance):
         self.manager.current = "calendar"
 
-
-# -------- ETHIOPIAN CALENDAR SCREEN --------
-class EthiopianCalendarScreen(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
-        self.add_widget(self.layout)
-        self.display_calendar()
-
-    def display_calendar(self):
-        self.layout.clear_widgets()
-
-        # Get current Ethiopian date
-        today = datetime.now() - timedelta(hours=72)
-        eth_date = EthiopianDateConverter.to_ethiopian(today.year, today.month, today.day)
-        year, month, day = eth_date.year, eth_date.month, eth_date.day
-        
-
-        self.layout.add_widget(Label(text=f"Ethiopian Calendar - {year}/{self.get_month_name(month)}", font_size=24, color=(0.1, 0.3, 0.6, 1),font_name="AmharicFont"))
-
-        # Grid of days
-        grid = GridLayout(cols=7, spacing=5, size_hint_y=None)
-        grid.bind(minimum_height=grid.setter('height'))
-
-        for d in range(1, 31):  # 30 days typical Ethiopian month
-            btn = Button(text=str(d), size_hint_y=None, height=50)
-            btn.bind(on_press=lambda inst, d=d: self.select_day(year, month, d))
-            grid.add_widget(btn)
-
-        self.layout.add_widget(grid)
-
-        back_btn = Button(text="Back", size_hint_y=None, height=50, background_color=(0.7, 0.7, 0.7, 1))
-        back_btn.bind(on_press=lambda _: setattr(self.manager, 'current', 'dashboard'))
-        self.layout.add_widget(back_btn)
-
-    def select_day(self, year, month, day):
-        print(f"Selected Ethiopian date: {year}/{month}/{day}")
-        # You can later open an attendance marking screen here.
-    
-    def get_month_name(self, month):
-        names = [
-            "መስከረም", "ጥቅምት", "ኅዳር", "ታህሳስ", "ጥር",
-            "የካቲት", "መጋቢት", "ሚያዝያ", "ግንቦት", "ሰኔ",
-            "ሐምሌ", "ነሐሴ", "ጳጉሜን"
-        ]
-        return names[month - 1]
 
 
 # -------- MAIN APP --------
