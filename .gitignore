@@ -2,3 +2,4 @@
 __pycache__/
 *.pyc
 smis_venv/
+*.docx

@@ -62,6 +62,11 @@ class GradeSection(BaseModel):
         constraints = [
             SQL('UNIQUE(grade, section)')  # Prevent duplicate Grade+Section
         ]
+    def __str__(self):
+        return f"{self.grade} {self.section}"
+
+    def __repr__(self):
+        return f"<GradeSection: {self.grade} {self.section}>"
 
 
 # ======== PERSON BASE CLASS ========
