@@ -173,5 +173,9 @@ class SuperAdminScreen(Screen):
         yes_btn.bind(on_press=confirm_delete)
         no_btn.bind(on_press=lambda _: popup.dismiss())
         popup.open()
+    
+    def dashboard(self, instance):
+        
+        self.manager.current = "dashboard"
 
 

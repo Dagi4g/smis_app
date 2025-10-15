@@ -25,6 +25,13 @@ from kivy.uix.widget import Widget
 from kivy.graphics import Color, Line, Rectangle
 
 class BorderedButton(Button):
+    """take a given button and color its boarder so  
+        usage :
+            btn = BorderedButton(boarder_color=(int,int,int,int),**kwargs)
+        
+        this class has similar usage as Button class in addition to a keyword argument called boarder_color which is a list of tuple.
+    
+    """
     def __init__(self, border_color=(1,0,0,1), **kwargs):
         super().__init__(**kwargs)
         self.border_color = border_color
@@ -107,14 +114,13 @@ class EthiopianCalendarScreen(Screen):
         num_days = 6 if (self.current_month == 13 and self.is_leap_year(self.current_year)) else \
                     5 if self.current_month == 13 else 30
 
-        for d in range(1, num_days + 1):
+        for day in range(1, num_days + 1):
+            et_day = EthiopianDateConverter.to_ethiopian(datetime.now().year, datetime.now().month, datetime.now().day)
             # Only blur future days if it's the current month/year
-            if self.current_year == EthiopianDateConverter.to_ethiopian(datetime.now().year, datetime.now().month, datetime.now().day).year \
-            and self.current_month == EthiopianDateConverter.to_ethiopian(datetime.now().year, datetime.now().month, datetime.now().day).month \
-            and d > self.today.day:
+            if (self.current_year,self.current_month,day) > (et_day.year, et_day.month, et_day.day) :
                 # Dim future days
                 btn = Button(
-                    text=str(d),
+                    text=str(day),
                     size_hint_y=None,
                     height=50,
                     background_color=get_color_from_hex("#CCCCCC"),
@@ -123,26 +129,26 @@ class EthiopianCalendarScreen(Screen):
                 )
             else:
                 # Normal day
-                if d == self.current_day and self.current_month == EthiopianDateConverter.to_ethiopian(datetime.now().year, datetime.now().month, datetime.now().day).month and self.current_year == EthiopianDateConverter.to_ethiopian(datetime.now().year, datetime.now().month, datetime.now().day).year:
+                if day == self.current_day and self.current_month == EthiopianDateConverter.to_ethiopian(datetime.now().year, datetime.now().month, datetime.now().day).month and self.current_year == EthiopianDateConverter.to_ethiopian(datetime.now().year, datetime.now().month, datetime.now().day).year:
                     # Highlight current day
                     btn = BorderedButton(
-                        text=str(d),
+                        text=str(day),
                         size_hint_y=None,
                         height=50,
                         border_color=(1,0,0,1),  # red border
-                        background_color=get_color_from_hex("#FF0000"),
+                        background_color=get_color_from_hex("#CCCCCC"),
                         color=(1,1,1,1)
                     )
 
                 else:
                     btn = Button(
-                        text=str(d),
+                        text=str(day),
                         size_hint_y=None,
                         height=50,
                         background_color=get_color_from_hex("#E0F7FA"),
                     color=(0, 0, 0, 1)
                 )
-                btn.bind(on_press=lambda inst, d=d: self.select_day(self.current_year, self.current_month, d))
+                btn.bind(on_press=lambda inst, d=day: self.select_day(self.current_year, self.current_month, d))
             grid.add_widget(btn)
         self.layout.add_widget(grid)
 
@@ -182,3 +188,4 @@ class EthiopianCalendarScreen(Screen):
             self.current_month = 13
             self.current_year -= 1
         self.display_calendar()
+
