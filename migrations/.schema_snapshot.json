@@ -55,7 +55,8 @@
             "grandfather_name",
             "sex",
             "username",
-            "password_hash"
+            "password_hash",
+            "role"
         ]
     },
     {

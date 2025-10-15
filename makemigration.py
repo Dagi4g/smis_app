@@ -51,7 +51,7 @@ if migrations_to_create:
     with open(file_path, "w") as f:
         f.write("from playhouse.migrate import SqliteMigrator, migrate\n")
         f.write("import peewee\n")
-        f.write("from models import db\n\n")
+        f.write("from models import *\n\n")
         f.write("def run(db, migrate_fn):\n")
         f.write("    migrator = SqliteMigrator(db)\n")
         for mig in migrations_to_create:

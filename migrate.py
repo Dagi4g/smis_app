@@ -15,7 +15,7 @@
 # migrate.py
 import os
 import importlib
-from models import db
+from models import *
 import peewee
 
 # Track applied migrations
@@ -36,6 +36,6 @@ MIGRATIONS_FOLDER = "migrations"
 for file in sorted(os.listdir(MIGRATIONS_FOLDER)):
     if file.endswith(".py") and not Migration.select().where(Migration.name == file).exists():
         module = importlib.import_module(f"migrations.{file[:-3]}")
-        module.run(db, migrate=lambda *args, **kwargs: None)
+        module.run(db, migrate_fn=lambda *args, **kwargs: None)
         Migration.create(name=file, applied=True)
         print(f"Applied {file}")

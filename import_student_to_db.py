@@ -48,10 +48,10 @@ def import_students(file_path):
                 print(f'student : {student} already exists. in grade {student.section}')
                 
 
-        print(f'Imported {len(students)} students into {grade} {section}')
+            print(f'Imported {len(students)} students into {grade} {section}')
 
 if __name__ == '__main__':
     if not db.is_closed():
         db.close()
-    import_students('9th mark.docx')
+    import_students('grade 12 Mark List.docx')
     db.close()

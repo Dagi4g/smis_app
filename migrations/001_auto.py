@@ -1,6 +1,6 @@
 from playhouse.migrate import SqliteMigrator, migrate
 import peewee
-from models import db
+from models import *
 
 def run(db, migrate_fn):
     migrator = SqliteMigrator(db)

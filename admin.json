@@ -1,0 +1,5 @@
+{
+    "admin_name" : "dagislipher",
+    "admin_password" : "$pbkdf2-sha256$29000$orQWQgghJKRUKsUYw9g7Rw$5c6ST4tDWA1I/X8v.dFZR4bBqVcjnNtBtXvANAN5ImA",
+    "admin_role" : "admin"
+}

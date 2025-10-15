@@ -71,6 +71,7 @@ class GradeSection(BaseModel):
 
 # ======== PERSON BASE CLASS ========
 class Person(BaseModel):
+    
     first_name = peewee.CharField()
     father_name = peewee.CharField()
     grandfather_name = peewee.CharField(null=True)
@@ -99,12 +100,14 @@ class Student(Person):
             # Ensure same student cannot exist twice in the same section
             SQL('UNIQUE(first_name, father_name, grandfather_name, section_id)')
         ]
+        
 
 
 # ======== TEACHER ========
 class Teacher(Person):
     username = peewee.CharField(unique=True)
     password_hash = peewee.CharField()
+    role = peewee.CharField(default='teacher')  # could be 'admin' or 'teacher'
 
     def set_password(self, password):
         """Set hashed password on this instance."""
@@ -114,25 +117,28 @@ class Teacher(Person):
         return pbkdf2_sha256.verify(password, self.password_hash)
 
     @classmethod
-    def generate_code(cls):
+    def generate_code(cls, role):     
         last = cls.select().order_by(cls.id.desc()).first()
         next_id = (last.id + 1) if last else 1
+        if role == "admin":
+            return f"STF{next_id:03d}"
         return f"TH{next_id:05d}"
 
     @classmethod
-    def create_teacher(cls, first_name, father_name, password, grandfather_name=None, sex=None):
-        username = cls.generate_code()
+    def create_teacher(cls, **kwargs):
+        username = cls.generate_code(kwargs.get("role", ""))
         teacher = cls(
-            first_name=first_name.title(),
-            father_name=father_name.title(),
-            grandfather_name=grandfather_name.title() if grandfather_name else None,
-            sex=sex,
+            first_name=kwargs.get("first_name", "").title(),
+            father_name=kwargs.get("father_name", "").title(),
+            grandfather_name=kwargs.get("grandfather_name", None),
+            sex=kwargs.get("sex"),
             username=username
         )
-        teacher.set_password(password)  # ✅ instance method sets hash
+        teacher.set_password(kwargs.get("password"))
         teacher.save()
         print(f"Dear {teacher.full_name}, your username is {username}.")
         return teacher
+
     
     @classmethod
     def authenticate(cls, username, password):

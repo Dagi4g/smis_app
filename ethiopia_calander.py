@@ -158,6 +158,7 @@ class EthiopianCalendarScreen(Screen):
 
     def select_day(self, year, month, day):
         print(f"Selected Ethiopian date: {year}/{month}/{day}")
+        self.manager.current = "all_students"
 
     def get_month_name(self, month):
         names = [
