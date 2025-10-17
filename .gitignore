@@ -1,5 +1,7 @@
+*.docx
+*.sqlite
 *.db
 __pycache__/
 *.pyc
+env/
 smis_venv/
-*.docx

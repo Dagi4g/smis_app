@@ -10,13 +10,13 @@ from kivy.core.window import Window
 from kivy.core.text import LabelBase
 
 from datetime import datetime,timedelta
-import models  # your database models
+from db import models  # your database models
 import peewee
 import admin # admin authentication
 from admin import SuperAdminScreen
 
 # Ethiopian calendar conversion
-
+from school_admin import SchoolAdminTeacherCRUDScreen
 from ethiopia_calander import EthiopianCalendarScreen
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.popup import Popup
@@ -39,9 +39,9 @@ class AllStudentsGroupedByGradeSection(Screen):
         self.grid_layout.clear_widgets()
 
         # List all students whose grade is above 8, grouped by grade/section
-        grade_sections = models.GradeSection.select().where(models.GradeSection.grade > 8).order_by(models.GradeSection.grade, models.GradeSection.section)
+        grade_sections = models.session.query(models.GradeSection).filter(models.GradeSection.grade > 8).order_by(models.GradeSection.grade, models.GradeSection.section).all()
         for gs in grade_sections:
-            students = models.Student.select().where(models.Student.section_id == gs)
+            students = session.query(models.Student).filter(models.Student.section_id == gs.id).all()
             student_names = [s.full_name for s in students]
             
             # Simulate <ol>...</ol> by numbering students
@@ -80,11 +80,16 @@ class LoginScreen(Screen):
             return
             
 
-        teacher = models.Teacher.authenticate(username, password)
+        teacher = models.Teacher.authenticate(models.session, username, password)
         if teacher is not None and teacher.role == 'teacher':
             print(f"Login successful for {teacher.full_name}")
             self.manager.current = "dashboard"
             return
+        elif teacher is not None and teacher.role == 'admin':
+            print(f"Login successful for admin {teacher.full_name}")
+            self.manager.current = "school_admin_teacher_crud"
+            return
+        
         
         print("Invalid username or password")
 
@@ -134,6 +139,7 @@ class SMISApp(App):
         sm.add_widget(EthiopianCalendarScreen(name="calendar"))
         sm.add_widget(AllStudentsGroupedByGradeSection(name="all_students"))
         sm.add_widget(SuperAdminScreen(name="super_admin"))
+        sm.add_widget(SchoolAdminTeacherCRUDScreen(name="school_admin_teacher_crud"))
         return sm
 
 

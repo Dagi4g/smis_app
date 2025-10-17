@@ -16,7 +16,7 @@ import json
 import os 
 from passlib.hash import pbkdf2_sha256
 import peewee
-import models
+from db import models
 
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
@@ -45,29 +45,29 @@ class SuperAdmin:
     def __init__(self, models):
         self.models = models
         
-    @classmethod
-    def create_teacher(cls, models, **kwargs):
+
+    def create_teacher(self, **kwargs):
         # Teacher: peewee Model class
         # teacher_data: dict with teacher info
-        
-        try :
-            return models.Teacher.create_teacher(**kwargs)
-        except Exception as e:
-            print(f"Error creating teacher: {e}")
-            return None
+
+        return self.models.Teacher.create_teacher(models.session, **kwargs)
 
     def read_teachers(self):
-        return list(self.models.Teacher.select())
+        return self.models.session.query(self.models.Teacher).all()
 
     @classmethod
     def update_teacher(cls, teacher_id, updated_data):
-        query = cls.models.Teacher.update(**updated_data).where(cls.models.Teacher.id == teacher_id)
-        return query.execute()
+        query = cls.models.session.query(cls.models.Teacher).filter(cls.models.Teacher.id == teacher_id)
+        query.update(**updated_data)
+        cls.models.session.commit()
+        return query.one_or_none()
 
     @classmethod
     def delete_teacher(cls, teacher_id):
-        query = cls.models.Teacher.delete().where(cls.models.Teacher.id == teacher_id)
-        return query.execute()
+        query = cls.models.session.query(cls.models.Teacher).filter(cls.models.Teacher.id == teacher_id)
+        query.delete()
+        cls.models.session.commit()
+        return query.one_or_none()
 
 class SuperAdminScreen(Screen):
     def __init__(self, **kwargs):
@@ -113,7 +113,7 @@ class SuperAdminScreen(Screen):
         first_name = TextInput(hint_text="First Name", multiline=False)
         father_name = TextInput(hint_text="Father Name", multiline=False)
         grandfather_name = TextInput(hint_text="Grandfather Name", multiline=False)
-        sex = Spinner(text="Select Sex", values=("Male", "Female", "Other"))
+        sex = Spinner(text="Select Sex", values=("Male", "Female", ))
         password_input = TextInput(hint_text="Password", multiline=False, password=True)
         
         if admin:
@@ -149,7 +149,8 @@ class SuperAdminScreen(Screen):
                 admin.set_password(password)
                 admin.save()
             else:
-                SuperAdmin.create_teacher(models, first_name=first_name_val, father_name=father_name_val, grandfather_name=grandfather_name_val, sex=sex_val, password=password, role='admin')
+                superadmin = SuperAdmin(models)
+                superadmin.create_teacher(first_name=first_name_val, father_name=father_name_val, grandfather_name=grandfather_name_val, sex=sex_val, password=password, role='admin')
             popup.dismiss()
             self.refresh()
         save_btn.bind(on_press=save_action)
