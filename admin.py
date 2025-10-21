@@ -28,6 +28,7 @@ from kivy.uix.button import Button
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.popup import Popup
 from kivy.core.window import Window
+from sqlalchemy.exc import IntegrityError
 
 
 ADMIN_FILE = os.path.join(os.path.dirname(__file__), 'admin.json')
@@ -80,6 +81,9 @@ class SuperAdminScreen(Screen):
         self.add_btn = Button(text="add school admin", size_hint_y=None, height=40)
         self.add_btn.bind(on_press=self.show_add_popup)
         self.layout.add_widget(self.add_btn)
+        self.login_btn = Button(text='login page',size_hint_y=None, height=40)
+        self.login_btn.bind(on_press=lambda _: setattr(self.manager,'current','login'))
+        self.layout.add_widget(self.login_btn)
         self.admins_layout = GridLayout(cols=1, spacing=10, size_hint_y=None)
         self.admins_layout.bind(minimum_height=self.admins_layout.setter('height'))
         scroll = ScrollView(size_hint=(1, 1))
@@ -107,7 +111,15 @@ class SuperAdminScreen(Screen):
 
     def show_edit_popup(self, admin):
         self._show_admin_popup("Edit Super Admin", admin)
-
+        
+    def error_popup(self, message):
+        content = BoxLayout(orientation='vertical', spacing=10, padding=10)
+        content.add_widget(Label(text=message))
+        ok_btn = Button(text="OK", size_hint_y=None, height=40)
+        content.add_widget(ok_btn)
+        popup = Popup(title="Error", content=content, size_hint=(0.5, 0.3))
+        ok_btn.bind(on_press=lambda _: popup.dismiss())
+        popup.open()
     def _show_admin_popup(self, title, admin=None):
         content = BoxLayout(orientation='vertical', spacing=10, padding=10)
         first_name = TextInput(hint_text="First Name", multiline=False)
@@ -115,17 +127,20 @@ class SuperAdminScreen(Screen):
         grandfather_name = TextInput(hint_text="Grandfather Name", multiline=False)
         sex = Spinner(text="Select Sex", values=("Male", "Female", ))
         password_input = TextInput(hint_text="Password", multiline=False, password=True)
+        role = TextInput(hint_text="role")
         
         if admin:
             first_name.text = admin.first_name
             father_name.text = admin.father_name
             grandfather_name.text = admin.grandfather_name
             sex.text = admin.sex
+            role.text = admin.role
         content.add_widget(first_name)
         content.add_widget(father_name)
         content.add_widget(grandfather_name)
         content.add_widget(sex)
         content.add_widget(password_input)
+        content.add_widget(role)
         btn_layout = BoxLayout(orientation='horizontal', spacing=10, size_hint_y=None, height=40)
         save_btn = Button(text="Save")
         cancel_btn = Button(text="Cancel")
@@ -150,7 +165,11 @@ class SuperAdminScreen(Screen):
                 admin.save()
             else:
                 superadmin = SuperAdmin(models)
-                superadmin.create_teacher(first_name=first_name_val, father_name=father_name_val, grandfather_name=grandfather_name_val, sex=sex_val, password=password, role='admin')
+                try:
+                    superadmin.create_teacher(first_name=first_name_val, father_name=father_name_val, grandfather_name=grandfather_name_val, sex=sex_val, password=password, role='admin')
+                except IntegrityError:
+                    self.error_popup("An admin with the same name already exists.")
+                    return
             popup.dismiss()
             self.refresh()
         save_btn.bind(on_press=save_action)
@@ -178,5 +197,4 @@ class SuperAdminScreen(Screen):
     def dashboard(self, instance):
         
         self.manager.current = "dashboard"
-
-
+    

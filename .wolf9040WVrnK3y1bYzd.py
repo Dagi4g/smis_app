@@ -27,12 +27,12 @@ Window.clearcolor = (0.95, 0.95, 0.95, 1)
 class ErrorPopup(Popup):
         
     def on_ok(self):
-        self.dismiss()
+        self.dismiss
         
         
     def show_message(self,message):
-        self.error_label.text = message
-        self.open()
+        slef.error_label = message
+        cls.open(cls)
 
             
 
@@ -78,12 +78,24 @@ class AllStudentsGroupedByGradeSection(Screen):
             self.grid_layout.add_widget(btn)
 # -------- LOGIN SCREEN --------
 class LoginScreen(Screen):
+    
+        
+    def error_popup(self,message):
+        content = BoxLayout(orientation='vertical',spacing=10,padding=10)
+        content.add_widget(Label(text=message))
+        ok_btn = Button(text='OK',size_hint_y=None,height=40)
+        content.add_widget(ok_btn)
+        popup = Popup(title="Error",content=content,size_hint=(0.5,0.3))
+        ok_btn.bind(on_press=lambda _:popup.dismiss())
+        self.clear_userdata(password_only=True)
+        popup.open()
+
     def login(self):
         username = self.username_input.text.strip()
         password = self.password_input.text.strip()
         admin_result = admin.authenticate_admin(username, password)
         if not username and not password:
-            ErrorPopup().show_message(message='empty user name and password ')
+            ErrorPopup.show_message(message='empty user name and password ')
             return
         if admin_result is not None:
             print(f"Admin {admin_result['admin_name']} successful logged in")
@@ -107,7 +119,7 @@ class LoginScreen(Screen):
             return
         
         
-        ErrorPopup().show_message(message="Invalid username or password")
+        ErrorPopup.show_message(message="Invalid username or password")
     def clear_userdata(self,password_only=False):
         if password_only:
             self.password_input.text = ''

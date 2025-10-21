@@ -1,0 +1,70 @@
+<ErrorPopup>:
+    error_label: error_label
+    title: "Error"
+    size_hint: 0.5, 0.3
+    auto_dismiss: False
+
+    BoxLayout:
+        color : 'red'
+        orientation: "vertical"
+        spacing: 10
+        padding: 10
+
+        Label:
+            color : 'red'
+            id: error_label
+            text: ""
+            text_size: self.width, None
+            halign: "center"
+            valign: "middle"
+
+        Button:
+            text: "OK"
+            size_hint_y: None
+            height: 40
+            on_press: root.on_ok()
+
+
+<LoginScreen>:
+    username_input: username
+    password_input: password
+    BoxLayout:
+        orientation:"vertical"
+        padding: 80
+        spacing: 20
+        Label:
+            text: 'Login'
+            font_size: 60
+            color: 'blue'
+        
+        GridLayout:
+            rows: 2
+            cols: 2
+            padding : 10
+            spacing : 10
+            Label:
+                text : 'User Name'
+                color : 'blue'
+            TextInput:
+                id : username
+                hint_text: 'UserName'
+                multiline: False
+            Label:
+                text : 'Password'
+                color : 'blue'
+
+            TextInput:
+                id: password
+                hint_text: 'Password'
+                multiline: False
+                password: True
+                allow_copy: False
+        Button:
+            text: 'Login'
+            size_hint_y: None
+            height: 50
+            background_color:(0.4, 0.7, 1, 1) 
+            color: (1, 1, 1, 1)
+            on_press: root.login()
+
+
