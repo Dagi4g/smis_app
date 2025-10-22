@@ -67,4 +67,27 @@
             color: (1, 1, 1, 1)
             on_press: root.login()
 
+<DashboardScreen>
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 40
+        spacing: 20
+        Label:
+            text: 'Dashboard'
+            padding: 10
+            color: (0.1,0.3,0.6,1)
+            
+        Button:
+            text: 'mark'
+            size_hint_y: None
+            height: 50
+        Button:
+            text: 'Attendance'
+            size_hint_y: None
+            height: 50 
+            on_press: root.open_calendar()
+
+        
+
 

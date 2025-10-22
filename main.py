@@ -11,14 +11,14 @@ from kivy.core.window import Window
 from kivy.core.text import LabelBase
 
 from datetime import datetime,timedelta
-from db import models  # your database models
+from db import models  # the database models
 import peewee
 import admin # admin authentication
 from admin import SuperAdminScreen
 
 # Ethiopian calendar conversion
 from school_admin import SchoolAdminTeacherCRUDScreen
-from ethiopia_calander import EthiopianCalendarScreen
+from eth_custom_calendar import ethiopia_custom_calender
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.popup import Popup
 
@@ -106,7 +106,8 @@ class LoginScreen(Screen):
             self.manager.current = "school_admin_teacher_crud"
             return
         
-        
+        self.clear_userdata(password_only=True)
+
         ErrorPopup().show_message(message="Invalid username or password")
     def clear_userdata(self,password_only=False):
         if password_only:
@@ -118,20 +119,10 @@ class LoginScreen(Screen):
 
 # -------- DASHBOARD --------
 class DashboardScreen(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        layout = BoxLayout(orientation='vertical', padding=40, spacing=20)
-        layout.add_widget(Label(text="Dashboard", font_size=30, color=(0.1, 0.3, 0.6, 1)))
+    #In this dashboard page both the attendance and mark buttons will be placed for the teacher to press and go to the 
+    # screen that corresponds to the button in the kivy file class .
 
-        marks_btn = Button(text="Marks", size_hint_y=None, height=50)
-        attendance_btn = Button(text="Attendance", size_hint_y=None, height=50)
-        attendance_btn.bind(on_press=self.open_calendar)
-
-        layout.add_widget(marks_btn)
-        layout.add_widget(attendance_btn)
-        self.add_widget(layout)
-
-    def open_calendar(self, instance):
+    def open_calendar(self):
         self.manager.current = "calendar"
 
 
@@ -143,7 +134,7 @@ class SmisApp(App):
         sm = ScreenManager()
         sm.add_widget(LoginScreen(name="login"))
         sm.add_widget(DashboardScreen(name="dashboard"))
-        sm.add_widget(EthiopianCalendarScreen(name="calendar"))
+        sm.add_widget(ethiopia_custom_calender.EthiopianCalendarScreen(name="calendar"))
         sm.add_widget(AllStudentsGroupedByGradeSection(name="all_students"))
         sm.add_widget(SuperAdminScreen(name="super_admin"))
         sm.add_widget(SchoolAdminTeacherCRUDScreen(name="school_admin_teacher_crud"))

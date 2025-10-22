@@ -23,6 +23,9 @@ from kivy.utils import get_color_from_hex
 
 from kivy.uix.widget import Widget
 from kivy.graphics import Color, Line, Rectangle
+from kivy.lang.builder import Builder
+
+# Builder.load_file('calender.kv')
 
 class BorderedButton(Button):
     """take a given button and color its boarder so  
