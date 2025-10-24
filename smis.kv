@@ -69,23 +69,24 @@
 
 <DashboardScreen>
 
-    BoxLayout:
-        orientation: 'vertical'
+    FloatLayout:
         padding: 40
         spacing: 20
         Label:
             text: 'Dashboard'
-            padding: 10
+            pos_hint: {'x':.3,'y':.6}
             color: (0.1,0.3,0.6,1)
+            size_hint: .5, .6
             
         Button:
             text: 'mark'
-            size_hint_y: None
-            height: 50
+            pos: 100,200
+            size_hint: .4,.2
+
         Button:
             text: 'Attendance'
-            size_hint_y: None
-            height: 50 
+            pos: 600,200
+            size_hint: .4,.2
             on_press: root.open_calendar()
 
         

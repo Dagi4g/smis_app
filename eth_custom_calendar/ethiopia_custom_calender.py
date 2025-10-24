@@ -51,6 +51,7 @@ class EthiopianCalendarScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
+        self.layout.add_widget(Label(text='calender'))
         self.add_widget(self.layout)
 
         # Initialize with the current Ethiopian date
@@ -65,7 +66,8 @@ class EthiopianCalendarScreen(Screen):
 
     def display_calendar(self):
         self.layout.clear_widgets()
-
+        
+        self.layout.add_widget(Label(text='calender'))
         # --- Navigation bar ---
         nav_layout = BoxLayout(size_hint_y=None, height=50, spacing=10)
 

@@ -13,11 +13,11 @@ from kivy.core.text import LabelBase
 from datetime import datetime,timedelta
 from db import models  # the database models
 import peewee
-import admin # admin authentication
-from admin import SuperAdminScreen
+from admin.superadmin import admin # admin authentication
+from admin.superadmin.admin import SuperAdminScreen
 
 # Ethiopian calendar conversion
-from school_admin import SchoolAdminTeacherCRUDScreen
+from admin.school_admin import SchoolAdminTeacherCRUDScreen
 from eth_custom_calendar import ethiopia_custom_calender
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.popup import Popup

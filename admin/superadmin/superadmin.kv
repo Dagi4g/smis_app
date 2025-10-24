@@ -1,0 +1,37 @@
+<SuperAdminScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 40
+        spacing: 20
+
+        Label:
+            text: "Super Admin Panel"
+            font_size: 30
+            color: (0.1, 0.3, 0.6, 1)
+
+        Button:
+            text: "Refresh"
+            size_hint_y: None
+            height: 40
+            on_press: root.refresh()
+
+        Button:
+            text: "Add School Admin"
+            size_hint_y: None
+            height: 40
+            on_press: root.add_admin()
+
+        Button:
+            text: "Login Page"
+            size_hint_y: None
+            height: 40
+            on_press: app.root.current = "login"
+
+        ScrollView:
+            GridLayout:
+                id: admins_layout
+                cols: 1
+                spacing: 10
+                size_hint_y: None
+                height: self.minimum_height
+
