@@ -24,9 +24,9 @@
 ## Overview
 
 This is an **offline, standalone School Management Information System (SMIS)** designed for high school teachers and administrators.  
-The MVP focuses on **attendance management**, allowing teachers to mark attendance for students per section and per day using an **Ethiopian calendar UI**.
+The MVP focuses on **attendance management** as well as **mark managment** , allowing teachers to mark attendance for students per section and per day using an **Ethiopian calendar UI**.
 
-The system uses **Python, Kivy, SQLite, and Peewee** for rapid desktop development, and **Passlib** for secure password storage and authentication.
+The system uses **Python, Kivy, SQLite, and SQlalchemy** for rapid desktop development, and **Passlib** for secure password storage and authentication.
 
 ---
 
@@ -38,7 +38,7 @@ The system uses **Python, Kivy, SQLite, and Peewee** for rapid desktop developme
 - Securely stores passwords using **Passlib**.
 
 ### Teacher
-- Login using username and password.
+- can Login using username and password provided by the admin at the start of the application.
 - View assigned sections and students.
 - Mark attendance with four statuses:
   - Present
@@ -46,10 +46,11 @@ The system uses **Python, Kivy, SQLite, and Peewee** for rapid desktop developme
   - Late
   - Has Permission
 - Attendance is stored in SQLite locally.
+- this is the plan for the mvp and isn't implimented in the mvp.
 
 ### Technical Highlights
 - **Offline & Standalone:** No internet required for local usage.  
-- **Database:** SQLite + Peewee ORM for efficient data storage and querying.  
+- **Database:** SQLite + SQLalchemy ORM for efficient data storage and querying.  
 - **Secure Authentication:** Teacher passwords hashed using **Passlib (PBKDF2_SHA256)**.  
 - **UI:** Minimalistic and clean Kivy interface with grey, white, and watery blue theme.  
 - **Ethiopian Calendar Integration:** Teachers select dates in Ethiopian calendar for attendance.
