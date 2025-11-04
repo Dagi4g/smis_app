@@ -41,6 +41,8 @@ def authenticate_admin(username, password):
         admin_data = json.load(f)
     admin_name = admin_data.get('admin_name')
     admin_password = admin_data.get('admin_password')
+    if username is None or password is None:
+        raise Exception('the user name or password can\'t be empty')
     if username == admin_name and pbkdf2_sha256.verify(password, admin_password):
         return admin_data
     return None
