@@ -15,7 +15,6 @@
 import json
 import os 
 from passlib.hash import pbkdf2_sha256
-import peewee
 from db import models
 
 from kivy.uix.screenmanager import Screen
@@ -76,7 +75,6 @@ class SuperAdmin:
         return query.one_or_none()
 
 from kivy.uix.screenmanager import Screen
-from peewee import IntegrityError
 from .ui_helpers import ConfirmPopup, ErrorPopup, AdminFormPopup
 # from your_models import SuperAdmin, models
 

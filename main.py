@@ -12,7 +12,6 @@ from kivy.core.text import LabelBase
 
 from datetime import datetime,timedelta
 from db import models  # the database models
-import peewee
 from admin.superadmin import admin # admin authentication
 from admin.superadmin.admin import SuperAdminScreen
 
