@@ -134,7 +134,8 @@ class EthiopianCalendarScreen(Screen):
                 )
             else:
                 # Normal day
-                if day == self.current_day and self.current_month == EthiopianDateConverter.to_ethiopian(datetime.now().year, datetime.now().month, datetime.now().day).month and self.current_year == EthiopianDateConverter.to_ethiopian(datetime.now().year, datetime.now().month, datetime.now().day).year:
+                if self.is_today(day):
+        
                     # Highlight current day
                     btn = BorderedButton(
                         text=str(day),
@@ -167,9 +168,11 @@ class EthiopianCalendarScreen(Screen):
         back_btn.bind(on_press=lambda _: setattr(self.manager, 'current', 'dashboard'))
         self.layout.add_widget(back_btn)
 
+
+    def  is_today(self,day):
+        return day == self.current_day and self.current_month == EthiopianDateConverter.to_ethiopian(datetime.now().year, datetime.now().month, datetime.now().day).month and self.current_year == EthiopianDateConverter.to_ethiopian(datetime.now().year, datetime.now().month, datetime.now().day).year
     def select_day(self, year, month, day):
         print(f"Selected Ethiopian date: {year}/{month}/{day}")
-        self.manager.current = "all_students"
 
     def get_month_name(self, month):
         names = [
