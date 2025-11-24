@@ -1,10 +1,12 @@
 from kivy.app import App
+from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
-
-
+from kivy.core.text import LabelBase
 from kivy.uix.popup import Popup
 
+from eth_custom_calendar.ethiopia_custom_calender import EthiopianCalendarScreen
 Window.clearcolor = (0.95, 0.95, 0.95, 1)
+from admin.superadmin.admin import SuperAdminScreen 
 
 class ErrorPopup(Popup):
 	
@@ -76,9 +78,9 @@ class SmisApp(App):
         sm = ScreenManager()
         sm.add_widget(LoginScreen(name="login"))
         sm.add_widget(DashboardScreen(name="dashboard"))
-        sm.add_widget(ethiopia_custom_calender.EthiopianCalendarScreen(name="calendar"))
+        sm.add_widget(EthiopianCalendarScreen(name="calendar"))
         sm.add_widget(SuperAdminScreen(name="super_admin"))
-        sm.add_widget(SchoolAdminTeacherCRUDScreen(name="school_admin_teacher_crud"))
+        # sm.add_widget(SchoolAdminTeacherCRUDScreen(name="school_admin_teacher_crud"))
         return sm
 
 

@@ -48,6 +48,7 @@ class BorderedButton(Button):
 
 
 class EthiopianCalendarScreen(Screen):
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
