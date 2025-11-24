@@ -5,10 +5,16 @@ ethiopian-date==1.0
 filetype==1.2.0
 greenlet==3.2.4
 idna==3.11
+iniconfig==2.3.0
 Kivy==2.3.1
 Kivy-Garden==0.1.5
+nodeenv==1.9.1
+packaging==25.0
 passlib==1.7.4
+pluggy==1.6.0
 Pygments==2.19.2
+pyright==1.1.407
+pytest==9.0.1
 requests==2.32.5
 six==1.17.0
 SQLAlchemy==2.0.44

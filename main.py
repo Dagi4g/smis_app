@@ -6,8 +6,9 @@ from kivy.uix.popup import Popup
 
 from eth_custom_calendar.ethiopia_custom_calender import EthiopianCalendarScreen
 Window.clearcolor = (0.95, 0.95, 0.95, 1)
-from admin.superadmin.admin import SuperAdminScreen 
-
+from admin.superadmin.admin import SuperAdminScreen ,  authenticate_admin 
+from db import models
+from admin.school_admin import SchoolAdminTeacherCRUDScreen 
 class ErrorPopup(Popup):
 	
     def on_ok(self):
@@ -25,7 +26,7 @@ class LoginScreen(Screen):
     def login(self):
         username = self.username_input.text.strip()
         password = self.password_input.text.strip()
-        admin_result = admin.authenticate_admin(username, password)
+        admin_result = authenticate_admin(username, password)
         if not username and not password:
             ErrorPopup().show_message(message='empty user name and password ')
             return
@@ -80,7 +81,7 @@ class SmisApp(App):
         sm.add_widget(DashboardScreen(name="dashboard"))
         sm.add_widget(EthiopianCalendarScreen(name="calendar"))
         sm.add_widget(SuperAdminScreen(name="super_admin"))
-        # sm.add_widget(SchoolAdminTeacherCRUDScreen(name="school_admin_teacher_crud"))
+        sm.add_widget(SchoolAdminTeacherCRUDScreen(name="school_admin_teacher_crud"))
         return sm
 
 
